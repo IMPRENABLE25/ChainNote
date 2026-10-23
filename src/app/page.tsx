@@ -48,7 +48,27 @@ export default function Home() {
         <label className="field-label" style={{marginTop:19}}>Capture d’écran <span className="hint">Optionnelle · 4 Mo max</span></label><label className="upload"><span className="upload-icon"><UploadCloud/></span><span><strong>Ajouter une image</strong><small>PNG, JPG ou autre format image. Stockée sur IPFS.</small></span><input type="file" accept="image/*" onChange={e => fileChange(e.target.files?.[0])}/></label>{file&&<div className="image-preview"><FileImage size={16}/>{file.name}<button className="clear" onClick={()=>fileChange()} aria-label="Retirer l’image"><X size={15}/></button></div>}
         <div className="public-notice"><LockKeyhole/><span>Votre message et son empreinte seront <strong>publics et permanents</strong> sur la blockchain. Ne publiez aucune donnée sensible. L’image (4 Mo maximum) sera accessible via IPFS.</span></div>
         {error&&<div className="error"><AlertCircle size={14} style={{verticalAlign:"middle",marginRight:5}}/>{error}</div>}{txMessage&&<div className="error">{txMessage}</div>}
-        <button className="publish" disabled={busy||(!message.trim()&&isConnected)} onClick={isConnected?publish:()=>connect({ connector: connectors[0] })}>{busy?<><LoaderCircle className="spinner" size={16}/>{uploading?"Envoi de l’image…":confirming?"Confirmez dans MetaMask…":"En attente de confirmation…"}:<><ShieldCheck size={16}/>{isConnected?"Publier ma preuve":"Connecter MetaMask"}</>}</button>
+        <button
+          className="publish"
+          disabled={busy || (!message.trim() && isConnected)}
+          onClick={isConnected ? publish : () => connect({ connector: connectors[0] })}
+        >
+          {busy ? (
+            <>
+              <LoaderCircle className="spinner" size={16} />
+              {uploading
+                ? "Envoi de l’image…"
+                : confirming
+                  ? "Confirmez dans MetaMask…"
+                  : "En attente de confirmation…"}
+            </>
+          ) : (
+            <>
+              <ShieldCheck size={16} />
+              {isConnected ? "Publier ma preuve" : "Connecter MetaMask"}
+            </>
+          )}
+        </button>
         {publishedId&&hash&&<div className="result"><div className="result-head"><Check size={15} style={{verticalAlign:"middle",marginRight:5}}/>Preuve publiée avec succès</div><div className="result-row">Transaction : <a className="mono" href={`https://testnet.bscscan.com/tx/${hash}`} target="_blank" rel="noreferrer">{shorten(hash)} ↗</a></div><div className="result-row">Contrat : <span className="mono">{shorten(contractAddress)}</span></div><div className="result-row">ID : #{publishedId}</div>{imageCid&&<div className="result-row">Image IPFS : <a href={`https://gateway.pinata.cloud/ipfs/${imageCid}`} target="_blank" rel="noreferrer">{shorten(imageCid)} ↗</a></div>}<div style={{marginTop:12}}><a className="secondary" href={`/verify?id=${publishedId}`}>Consulter / vérifier la preuve</a></div></div>}
       </div><aside className="panel side-panel"><h2 className="side-title">Réseau de publication</h2><div className="network"><span className="network-mark">◆</span><span>BNB Smart Chain<small>Testnet · Chain ID 97</small></span></div><div className="stat"><div className="stat-label">Wallet connecté</div><div className="stat-value">{isConnected?shorten(address!):"Aucun wallet"}</div></div><div className="stat"><div className="stat-label">Solde de test</div><div className="stat-value">{balance.data?`${Number(balance.data.formatted).toFixed(4)} ${balance.data.symbol}`:isConnected?"Lecture du solde…":"Connectez MetaMask"}</div></div><div className="stat"><div className="stat-label">Frais de publication</div><div className="stat-value">Payés en tBNB par le wallet</div></div><p className="side-foot">Vous aurez besoin de tBNB pour publier. <a href="https://www.bnbchain.org/en/testnet-faucet" target="_blank" rel="noreferrer" style={{color:"var(--green)",textDecoration:"underline"}}>Obtenir des tBNB ↗</a></p></aside></section></main>
     <footer className="footer"><div className="container footer-inner"><span>© 2026 ChainNote · Projet expérimental sur testnet</span><span>Les preuves sont publiques et immuables.</span></div></footer></>;
