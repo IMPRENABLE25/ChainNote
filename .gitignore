@@ -1,0 +1,34 @@
+# Frontend and build output
+node_modules/
+.next/
+out/
+dist/
+coverage/
+
+# Local environment files. Only the blank template may be committed.
+.env*
+!.env.example
+
+# Foundry output and deployment records
+broadcast/
+cache/
+artifacts/
+
+# Private keys, wallet keystores, seeds and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.wallet
+*.seed
+*.mnemonic
+id_rsa
+id_ed25519
+UTC--*
+keystore/
+secrets/
+
+# Logs and local editor state
+*.log
